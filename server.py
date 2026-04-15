@@ -7,14 +7,15 @@
 
 from fastmcp import FastMCP
 import json
+import os
 import re
 from pathlib import Path
 from datetime import datetime
 
 mcp = FastMCP("session-state-mcp")
 
-STATES_DIR = Path.home() / ".claude-states"
-STATES_DIR.mkdir(exist_ok=True)
+STATES_DIR = Path(os.environ.get("CLAUDE_STATES_DIR", Path.home() / ".claude-states"))
+STATES_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def _name_to_slug(name: str) -> str:

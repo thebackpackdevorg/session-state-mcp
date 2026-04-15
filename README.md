@@ -53,7 +53,7 @@ uv --version
 ### 2. Clone or download the server
 
 ```bash
-git clone <repo-url> ~/session-state-mcp
+git clone https://github.com/thebackpackdevorg/session-state-mcp.git ~/session-state-mcp
 # or just copy server.py to any directory
 ```
 
@@ -68,13 +68,17 @@ You should see the FastMCP banner and `Starting MCP server`. Press `Ctrl+C` to s
 
 ### 4. Register in Claude Code
 
-Add the following entry to `~/.claude.json` under `mcpServers`:
+Add the following entry to `~/.claude/settings.json` under `mcpServers`:
 
 ```json
-"session-state-mcp": {
-  "type": "stdio",
-  "command": "/path/to/uv",
-  "args": ["run", "/path/to/session-state-mcp/server.py"]
+{
+  "mcpServers": {
+    "session-state-mcp": {
+      "type": "stdio",
+      "command": "/path/to/uv",
+      "args": ["run", "/path/to/session-state-mcp/server.py"]
+    }
+  }
 }
 ```
 
@@ -87,10 +91,14 @@ which uv
 **Example** (Linux/WSL with uv installed in home):
 
 ```json
-"session-state-mcp": {
-  "type": "stdio",
-  "command": "/home/youruser/.local/bin/uv",
-  "args": ["run", "/home/youruser/session-state-mcp/server.py"]
+{
+  "mcpServers": {
+    "session-state-mcp": {
+      "type": "stdio",
+      "command": "/home/youruser/.local/bin/uv",
+      "args": ["run", "/home/youruser/session-state-mcp/server.py"]
+    }
+  }
 }
 ```
 
@@ -147,7 +155,24 @@ Shows all states with date, work mode, and summary preview.
 
 ## Storage
 
-States are saved as human-readable JSON files in `~/.claude-states/`:
+States are saved as human-readable JSON files in `~/.claude-states/` by default.
+
+To use a custom directory, set the `CLAUDE_STATES_DIR` environment variable:
+
+```json
+{
+  "mcpServers": {
+    "session-state-mcp": {
+      "type": "stdio",
+      "command": "/home/youruser/.local/bin/uv",
+      "args": ["run", "/home/youruser/session-state-mcp/server.py"],
+      "env": { "CLAUDE_STATES_DIR": "/custom/path/to/states" }
+    }
+  }
+}
+```
+
+Each state is a human-readable JSON file:
 
 ```json
 {
